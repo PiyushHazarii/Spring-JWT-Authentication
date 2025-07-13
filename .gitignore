@@ -37,5 +37,5 @@ build/
 
 # But don't ignore these:
 !.gitignore
-!src/
+!src/** 
 

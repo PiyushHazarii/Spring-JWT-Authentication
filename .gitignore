@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore everything
+*
+
+# But don't ignore these:
+!.gitignore
+!src/
+

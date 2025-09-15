@@ -1,0 +1,14 @@
+JWT - Token : json web token : javascript object notation token
+
+it has three parts :
+    1. Header : "alg"(algorithm) : hs256
+                "type" (token type) : jwt
+
+    2. Payload (data) : "sub" : "1234556"
+                 "name" : "Piyush"
+                 "iat" : 123456789
+
+    3. Signature : base64urlEncode(header) + "."+
+                    base64urlEncode(payload),
+                    your-256-bit-secret
+

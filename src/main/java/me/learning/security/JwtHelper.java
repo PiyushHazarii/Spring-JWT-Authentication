@@ -18,25 +18,25 @@ public class JwtHelper {
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     // Secret key used to sign the token
-    private String secret = "m9ZhQnhGsl8X2H1HGeXGc5bPmV9F2Vx9JrDxg9y0eB4Vc8Hr9kUgCy0RZQWxB9lW";
+    private String secret = "m9ZhQnhGsl8X2H1HGeXGc5bPmV9F2Vx9JrDxgkshdfklashdklfjhasldkfhaklsdhfklashdfklhasdlkfhasdlkfhasldkjfhladskfhlaksdjfhlkasdhflkadshfadskjl9y0eB4Vc8Hr9kUgCy0RZQWxB9lW";
 
-    // ✅ Retrieve username from JWT token
+    //  Retrieve username from JWT token
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
-    // ✅ Retrieve expiration date from JWT token
+    // Retrieve expiration date from JWT token
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
-    // ✅ Retrieve specific claim from JWT token
+    //  Retrieve specific claim from JWT token
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
 
-    // ✅ Get all claims using the secret key
+    // Get all claims using the secret key
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
@@ -44,19 +44,19 @@ public class JwtHelper {
                 .getBody();
     }
 
-    // ✅ Check if token is expired
+    // Check if token is expired
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
 
-    // ✅ Generate JWT token for a given user
+    // Generate JWT token for a given user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-    // 🔐 Method that creates JWT token with claims
+    // Method that creates JWT token with claims
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims) // claims like issuer, role, etc.

@@ -33,6 +33,7 @@ public class AuthController {
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
 
         // Authenticate user details whether it is valid or not...
+        // matlab ye authenticate krke de dega ki user valid hai ki nhi
         this.doAuthenticate(request.getEmail(), request.getPassword());
 
         // Load user details

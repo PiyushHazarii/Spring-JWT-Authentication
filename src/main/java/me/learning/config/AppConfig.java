@@ -14,6 +14,7 @@ public class AppConfig {
 
     // spring issi ke help se fetch karega user name and password jab security lagana hoga to
     // ye bean to fetch karega wo
+    // ye in memory database use karega
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails userDetails = User.builder()

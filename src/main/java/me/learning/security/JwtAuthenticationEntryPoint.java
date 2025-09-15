@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+// Mehtod of this class is called whenever as exception is thrown due to unauthenticated user
+// trying to access the resouce that required authentication.
+
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

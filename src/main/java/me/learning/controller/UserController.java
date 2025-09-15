@@ -23,6 +23,7 @@ public class UserController {
         return users;
     }
 
+    // principal ek aisa object hota hai jo hamare current user ko point krta hai
     @GetMapping("/currentUser")
     public String getLoggedUser(Principal principal){
         return principal.getName();

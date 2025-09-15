@@ -21,16 +21,19 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
+    // csrf : Cross-Site Request Forgery
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // This is the new way to disable csrf earlier we can do like this
+                // http.csrf().disable
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/test").authenticated()
                         .requestMatchers("/auth/login", "/auth/register").permitAll()
                         .anyRequest().authenticated()
-                )
+                ).cors(cors -> cors.disable())
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(point)
                 )

@@ -20,6 +20,16 @@ import io.jsonwebtoken.MalformedJwtException;
 
 import java.io.IOException;
 
+// ye extends karega OncePerRequestFilter and overide karega ek method and in
+// this class write the logic to check whether the token is comming in header or not.
+// 1. get token from request
+// 2. validate token
+// 3. get usernname from the token
+// 4. load user associated with this token
+// 5. set authentication
+
+// ye class har bar chalega jab bhi request krna chahega to ye pehele validate karega ki
+// request valid hai ki nhi header check karega then wo aage bhej dega filterChain.doFilter(request, response);
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -32,21 +42,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // Get the token from Authorization header
+        // Get the header from Authorization
+        // in this way the header and token is comming
+        // Authorization = Bearer woeruipoweiur  like this
         String requestHeader = request.getHeader("Authorization");
         logger.info(" Header : {}", requestHeader);
 
         String username = null;
         String token = null;
 
+        // check karega ki requestHeader null nhi hona chaiye and start hone chaiye bearer se
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {
             token = requestHeader.substring(7); // Remove "Bearer " prefix
 
             try {
+                // from this method you can get the particular username.
                 username = this.jwtHelper.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
                 logger.info("Illegal Argument while fetching the username!!");
@@ -62,7 +74,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.info("Invalid Header value!!");
         }
 
-        // Once we get the token, validate it and set authentication
+        // agar username mein null nhi hai and uska authentication null hai matlab
+        // wo authenticate nhi hua hai then hum usko authenticate karenge
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // Load user details
@@ -73,11 +86,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (isValid) {
                 // Set authentication
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 logger.info("Validation fails!!");
